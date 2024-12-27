@@ -14,20 +14,24 @@ void display(Shop menu[], int n);
 void update(Shop menu[], int n);
 void sort(Shop menu[], int n);
 void search(Shop menu[], int n);
+void sell(Shop menu[], int n, double *revenue);
+void calculateRevenue(double revenue);
 
 int main() {
     Shop menu[50];
     int n = 0;
+    double revenue = 0;
     int choose;
+
     do {
         printf("\nMENU\n");
         printf("1. Nhap thong tin san pham\n");
         printf("2. Hien thi danh sach san pham\n");
-        printf("3. Nhap san pham\n");
+        printf("3. Ban san pham\n");
         printf("4. Cap nhat thong tin san pham\n");
         printf("5. Sap xep san pham theo gia (tang/giam)\n");
         printf("6. Tim kiem san pham\n");
-        printf("7. Ban san pham\n");
+        printf("7. Tinh doanh thu\n");
         printf("8. Doanh thu hien tai\n");
         printf("9. Thoat\n");
         printf("Lua chon cua ban: ");
@@ -44,7 +48,7 @@ int main() {
                 display(menu, n);
                 break;
             case 3:
-            	
+                sell(menu, n, &revenue);
                 break;
             case 4:
                 update(menu, n);
@@ -56,10 +60,10 @@ int main() {
                 search(menu, n);
                 break;
             case 7:
-                
+                calculateRevenue(revenue);
                 break;
             case 8:
-                
+                printf("Doanh thu hien tai: %.2lf\n", revenue);
                 break;
             case 9:
                 printf("Thoat chuong trinh.\n");
@@ -71,6 +75,7 @@ int main() {
 
     return 0;
 }
+
 void enter(Shop menu[], int *n) {
     for (int i = 0; i < *n; i++) {
         printf("Nhap thong tin san pham thu %d:\n", i + 1);
@@ -89,6 +94,7 @@ void enter(Shop menu[], int *n) {
         fflush(stdin);
     }
 }
+
 void display(Shop menu[], int n) {
     printf("\nDanh sach san pham:\n");
     for (int i = 0; i < n; i++) {
@@ -101,6 +107,7 @@ void display(Shop menu[], int n) {
         printf("-------------------\n");
     }
 }
+
 void update(Shop menu[], int n) {
     char id[20];
     printf("Nhap ID san pham can cap nhat: ");
@@ -126,6 +133,7 @@ void update(Shop menu[], int n) {
     }
     printf("Khong tim thay san pham voi ID: %s\n", id);
 }
+
 void sort(Shop menu[], int n) {
     int choice;
     printf("Sap xep theo gia:\n1. Tang dan\n2. Giam dan\nLua chon cua ban: ");
@@ -142,6 +150,7 @@ void sort(Shop menu[], int n) {
     }
     printf("Da sap xep san pham theo gia.\n");
 }
+
 void search(Shop menu[], int n) {
     char name[50];
     printf("Nhap ten san pham can tim: ");
@@ -161,3 +170,31 @@ void search(Shop menu[], int n) {
     }
 }
 
+void sell(Shop menu[], int n, double *revenue) {
+    char id[20];
+    int quantity;
+
+    printf("Nhap ID san pham can ban: ");
+    fflush(stdin);
+    fgets(id, 20, stdin);
+    id[strcspn(id, "\n")] = 0;
+
+    for (int i = 0; i < n; i++) {
+        if (strcmp(menu[i].id, id) == 0) {
+            printf("Nhap so luong can ban: ");
+            scanf("%d", &quantity);
+            if (quantity > menu[i].quantity) {
+                printf("Khong du hang de ban!\n");
+            } else {
+                menu[i].quantity -= quantity;
+                *revenue += quantity * menu[i].sellPrice;
+                printf("Ban thanh cong %d san pham '%s'.\n", quantity, menu[i].name);
+            }
+            return;
+        }
+    }
+    printf("Khong tim thay san pham voi ID: %s\n", id);
+}
+void calculateRevenue(double revenue) {
+    printf("Doanh thu hien tai: %.2lf\n", revenue);
+}
