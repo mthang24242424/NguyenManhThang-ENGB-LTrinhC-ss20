@@ -22,13 +22,13 @@ int main(){
     	printf("MENU\n1.Nhap so luong va thong tin sach\n2.Hien thi thong tin sach\n3.Them sach vao vi tri\n4.Xoa sach theo vi tri\n5.Cap nhat thong tin sach theo ma sach\n6.Sap xep sach theo gia(tang/giam)\n7.Tim kiem sach theo ten sach\n8.Thoat\nLua chon cua ban: ");
     	scanf("%d",&choose);
     	switch(choose){
-    		case 1: // nhap so luong va tt tung sach
+    		case 1: 
     			printf("nhap so luong sach: ");
     			scanf("%d",&number);
     			fflush(stdin);
     			enter(danhSach,&number);
     			break;
-    		case 2:// hien thi danh sach
+    		case 2:
     			printBook(danhSach,&number);
     			break;
     		case 3:
@@ -186,7 +186,7 @@ void search(Book danhSach[], int *n) {
 
     int found = 0;
     for (int i = 0; i < *n; i++) {
-        if (strstr(danhSach[i].nameBook, name)) { // T?m tên sách ch?a chu?i t?m ki?m
+        if (strstr(danhSach[i].nameBook, name)) {
             printf("Tim thay sach:\n");
             printf("ID: %s\n", danhSach[i].id);
             printf("Ten sach: %s\n", danhSach[i].nameBook);
